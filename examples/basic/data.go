@@ -16,9 +16,8 @@ func slice_example() {
 	// slice is a "window" of an array (variable size, up to whole array)
 	arr := [...]string{"a", "b", "c", "d", "e"}  // ... indicates array
 	s1 := arr[1:3]
-	s2 := arr[2:4]
 	_ = len(s1)  // 2, size of s1
-	_ = cap(s2)  // 5, capacity = size of arr
+	_ = cap(s1)  // 4, capacity = start of slice -> end of array
 	// slice literals will create a new underlying array
 	sli1 := []int {1, 2, 3}  // nothing in [] => this is a slice, not array
 	sli2 := make([]int, 10)  // len = cap = 10
