@@ -12,7 +12,7 @@ func check_error(err error) {
 	}
 }
 
-func scan_string() string {
+func scan_line() string {
 	reader := bufio.NewReader(os.Stdin)
     str, err := reader.ReadString('\n')
 	check_error(err)
@@ -23,6 +23,6 @@ func scan_string() string {
 func main() {
 	// Scan line as string
 	fmt.Print("Input string (can contain whitespace): ")
-	str := scan_string()
+	str := scan_line()
 	fmt.Println("Your string is:", str)
 }
