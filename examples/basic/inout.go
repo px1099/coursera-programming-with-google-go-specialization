@@ -49,21 +49,31 @@ func read_write_file_example() {
 //lint:ignore U1000 (example)
 func file_access_read_example() {
 	filename := "test.txt"
-	f, _ := os.Open(filename)
+	f, err := os.Open(filename)
+	if err != nil {
+		panic(err)  // do something
+	}
+	defer f.Close()
+
 	barr := make([]byte, 10)
 	num_read_bytes, _ := f.Read(barr)
 	_ = num_read_bytes
-	f.Close()
 }
 
 //lint:ignore U1000 (example)
 func file_access_write_example() {
 	filename := "output.txt"
-	f, _ := os.Create(filename)
+	f, err := os.Create(filename)
+	if err != nil {
+		panic(err)  // do something
+	}
+	defer f.Close()
+
 	barr := []byte{1, 2, 3}
 	num_write_bytes, _ := f.Write(barr)
 	_ = num_write_bytes
 	num_write_bytes, _ = f.WriteString("Hi\n")
 	_ = num_write_bytes
-	f.Close()
+
+	_ = f.Sync()
 }
