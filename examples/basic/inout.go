@@ -38,3 +38,32 @@ func read_all_line_as_string() {
 		_ = line
 	}
 }
+
+//lint:ignore U1000 (example)
+func read_write_file_example() {
+	filename := "test.txt"
+	data, _ := os.ReadFile(filename)
+	_ = os.WriteFile(filename, data, 0777)  // 3rd arg: file perm
+}
+
+//lint:ignore U1000 (example)
+func file_access_read_example() {
+	filename := "test.txt"
+	f, _ := os.Open(filename)
+	barr := make([]byte, 10)
+	num_read_bytes, _ := f.Read(barr)
+	_ = num_read_bytes
+	f.Close()
+}
+
+//lint:ignore U1000 (example)
+func file_access_write_example() {
+	filename := "output.txt"
+	f, _ := os.Create(filename)
+	barr := []byte{1, 2, 3}
+	num_write_bytes, _ := f.Write(barr)
+	_ = num_write_bytes
+	num_write_bytes, _ = f.WriteString("Hi\n")
+	_ = num_write_bytes
+	f.Close()
+}
