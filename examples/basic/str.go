@@ -24,6 +24,12 @@ func string_example() {
 	_ = strings.TrimSpace(" Hanoi ")
 	_ = strings.ReplaceAll("[a,b,c]", ",", ";")
 	_ = strings.Split("Split the words", " ")
+	// limiting length of string
+	str := "askdfjalsdflsldkfjsl"
+	if len(str) > 10 {
+		str = str[:10]
+	}
+	_ = str
 }
 
 //lint:ignore U1000 (example)
