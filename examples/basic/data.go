@@ -9,6 +9,9 @@ func array_example() {
 		_ = i // index
 		_ = v // value
 	}
+	for i := range 5 {
+		_ = x[i] // value
+	}
 }
 
 //lint:ignore U1000 (example)
