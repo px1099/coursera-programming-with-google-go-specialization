@@ -1,9 +1,13 @@
 package main
 
-import "bufio"
-import "fmt"
-import "log"
-import "os"
+import (
+	"bufio"
+	"fmt"
+	"log"
+	"os"
+	"strconv"
+	"strings"
+)
 
 //lint:ignore U1000 (example)
 func scan_line() string {
@@ -28,6 +32,20 @@ func scan_all_lines() []string {
         log.Fatal(err)
     }
 	return lines
+}
+
+//lint:ignore U1000 (example)
+func scan_int_slice() []int {
+    line := scan_line()
+	var int_slice []int
+	for _, field := range strings.Fields(line) {
+		num, err := strconv.Atoi(field)
+		if err != nil {
+			log.Fatal(err)
+		}
+		int_slice = append(int_slice, num)
+	}
+	return int_slice
 }
 
 func main() {
