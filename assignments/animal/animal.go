@@ -23,26 +23,27 @@ func (a Animal) Speak() {
 var animals map[string]Animal = map[string]Animal{
 	"cow": {"grass", "walk", "moo"},
 	"bird": {"worms", "fly", "peep"},
-	"snake": {"mice", "slither", "hsss "},
+	"snake": {"mice", "slither", "hsss"},
+}
+
+var functions map[string]func(Animal) = map[string]func(Animal){
+	"eat": Animal.Eat,
+	"move": Animal.Move,
+	"speak": Animal.Speak,
 }
 
 func processRequest(animal_name, info_requested string) {
-	var animal Animal
 	animal, exists := animals[animal_name]
 	if !exists {
 		fmt.Println("animal", animal_name, "not found in database")
 		return
 	}
-	switch info_requested {
-	case "eat":
-		animal.Eat()
-	case "move":
-		animal.Move()
-	case "speak":
-		animal.Speak()
-	default:
+	function, exists := functions[info_requested]
+	if !exists {
 		fmt.Println("info", info_requested, "is not a valid request")
+		return
 	}
+	function(animal)
 }
 
 func main() {
