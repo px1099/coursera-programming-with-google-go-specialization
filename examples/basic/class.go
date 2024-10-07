@@ -32,3 +32,10 @@ func (p *Point) Scale(v float64) {
 	p.x = p.x * v
 	p.y = p.y * v
 }
+
+//lint:ignore U1000 (example)
+func class_func_example() {
+	var f1 func(Point) float64 = Point.DistToOrig
+	var f2 func(*Point, float64) = (*Point).Scale
+	_, _ = f1, f2
+}
