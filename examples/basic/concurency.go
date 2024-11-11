@@ -37,3 +37,87 @@ func concurrent_channel_example() {
 	b := <- ch  // Buffered channel: blocks if buffer is empty
 	fmt.Println(a*b)
 }
+
+//lint:ignore U1000 (example)
+func iterate_channel_example() {
+	ch := make(chan string)
+	go func() {	
+		for message := range ch {
+			fmt.Println(message)
+		}  // Loop stops when channel is closed
+	}()
+	ch <- "Hello"
+	ch <- "Goodbye"
+	close(ch)
+}
+
+//lint:ignore U1000 (example)
+func select_channel_receive_example() {
+	var wg sync.WaitGroup
+	ch1 := make(chan string)
+	defer close(ch1)
+	ch2 := make(chan string)
+	defer close(ch2)
+	go func() {
+		// Receive either from channel 1 or 2
+		defer wg.Done()
+		select {
+		case a := <- ch1:
+			fmt.Println(a)
+		case b := <- ch2:
+			fmt.Println(b)
+		}
+	}()
+	wg.Add(1)
+	ch2 <- "Hello"
+	wg.Wait()
+}
+
+//lint:ignore U1000 (example)
+func select_channel_send_or_receive_example() {
+	var wg sync.WaitGroup
+	inchan := make(chan string)
+	defer close(inchan)
+	outchan := make(chan string)
+	defer close(outchan)
+	go func() {
+		// The one unblocked first will be executed
+		// Default: execute if all cases are blocked
+		defer wg.Done()
+		b := "Goodbye"
+		select {
+		case a := <- inchan:
+			fmt.Println("Received", a)
+		case outchan <- b:
+			fmt.Println("Sent", b)
+		}
+	}()
+	wg.Add(1)
+	<- outchan
+	wg.Wait()
+}
+
+//lint:ignore U1000 (example)
+func select_with_abort_example() {
+	var wg sync.WaitGroup
+	ch := make(chan string)
+	defer close(ch)
+	abort := make(chan string)
+	defer close(abort)
+	go func() {
+		defer wg.Done()
+		for {
+			select {
+			case a := <- ch:
+				fmt.Println(a)
+			case <- abort:
+				return
+			}
+		}
+	}()
+	wg.Add(1)
+	ch <- "Hello"
+	ch <- "Goodbye"
+	abort <- "Abort"
+	wg.Wait()
+}
