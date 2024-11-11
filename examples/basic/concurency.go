@@ -139,3 +139,23 @@ func mutex_example() {
 	wg.Wait()
 	fmt.Println(count)
 }
+
+//lint:ignore U1000 (example)
+func init_example() {
+	var wg sync.WaitGroup
+	var once sync.Once
+	setup := func() {
+		fmt.Println("Init")
+	}
+	dostuff := func() {
+		defer wg.Done()
+		// Ensure setup() is executed exactly once
+		// no matter how many goroutines are called
+		once.Do(setup)
+		fmt.Println("Hello")
+	}
+	wg.Add(2)
+	go dostuff()  // Init + Hello
+	go dostuff()  // Hello
+	wg.Wait()
+}
