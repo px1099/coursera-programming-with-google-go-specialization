@@ -121,3 +121,21 @@ func select_with_abort_example() {
 	abort <- "Abort"
 	wg.Wait()
 }
+
+//lint:ignore U1000 (example)
+func mutex_example() {
+	var wg sync.WaitGroup
+	var mut sync.Mutex
+	count := 0
+	inc := func() {
+		defer wg.Done()
+		mut.Lock()
+		count += 1
+		mut.Unlock()
+	}
+	wg.Add(2)
+	go inc()
+	go inc()
+	wg.Wait()
+	fmt.Println(count)
+}
